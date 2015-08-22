@@ -1,36 +1,43 @@
-<?php namespace Phuong\PushParseNotification;
+<?php
+
+namespace Phuong\PushParseNotification;
 
 use Parse\ParseClient;
 use Parse\ParseObject;
+use Config;
 
-class App {
-    
+class App
+{
+
+    private $obj;
+
     public function __construct()
     {
-        $app_id = "";
-        $rest_key = "";
-        $master_key = "";
-        ParseClient::initialize($app_id, $rest_key, $master_key);
+        $config = Config::get('push-parse-notification');
+        ParseClient::initialize($config['app_id'], $config['rest_key'], $config['master_key']);
+        $this->obj = ParseObject::create("TestObject");
     }
 
-    public function to($addressee)
+    /**
+     * Set data
+     * @param type $key
+     * @param type $value
+     * @return \Phuong\PushParseNotification\App
+     */
+    public function set($key, $value)
     {
-        $this->addressee = is_string($addressee) ? new Device($addressee) : $addressee;
-
+        $this->obj->set($key, $value);
         return $this;
     }
 
-    public function send($message, $options = array()) {
-        $push = new Push($this->adapter, $this->addressee, ($message instanceof Message) ? $message : new Message($message, $options));
-
-        $this->pushManager->add($push);
-        
-        $this->pushManager->push();
-
+    /**
+     * Save data
+     * @return \Phuong\PushParseNotification\App
+     */
+    public function save()
+    {
+        $this->obj->save();
         return $this;
     }
 
-    public function getFeedback() {
-        return $this->pushManager->getFeedback($this->adapter);
-    }
 }

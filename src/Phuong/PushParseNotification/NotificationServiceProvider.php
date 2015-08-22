@@ -1,9 +1,10 @@
 <?php namespace Phuong\PushParseNotification;
 
 use Illuminate\Support\ServiceProvider;
-use Phuong\PushParseNotification\PushNotification;
+use Phuong\PushParseNotification\Notification;
 
-class PushNotificationServiceProvider extends ServiceProvider {
+class NotificationServiceProvider extends ServiceProvider
+{
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -19,7 +20,10 @@ class PushNotificationServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
-        $this->package('davibennun/laravel-push-notification');
+        $config_path = function_exists('config_path') ? config_path('push-notification.php') : 'push-notification.php';
+        $this->publishes([
+            __DIR__ . '/../../config/config.php' => $config_path
+        ], 'config');
     }
 
     /**
@@ -29,9 +33,8 @@ class PushNotificationServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app['pushNotification'] = $this->app->share(function($app)
-        {
-            return new PushNotification();
+        $this->app['pushParseNotification'] = $this->app->share(function($app) {
+            return new Notification();
         });
     }
 
