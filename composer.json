@@ -1,0 +1,21 @@
+{
+    "name": "phuong/laravel-push-parse-notification",
+    "description": "A laravel package to send push notifications to mobile app via parse.com",
+    "keywords": ["apns", "gcm", "push", "iphone", "apple", "notification", "laravel", "parse.com"],
+    "authors": [
+        {
+            "name": "Phuong",
+            "email": "boingonline@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "parse/php-sdk": "1.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Phuong\\PushParseNotification": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
